@@ -20,49 +20,59 @@ const megaTeacher = {
 
 /*const addHobbie = function (hobbie) {
     megaTeacher.hobbies.push(hobbie);
-    return megaTeacher.hobbies;
+    return `Lista de hobbies: \n${megaTeacher.hobbies.join("\n")}`
 }
 console.log(addHobbie("Surf"));*/
 
 //===============================2============================================
 
-/*megaTeacher.introduceMySelf = function () {
-    return `Hola, me llamo ${this.name} ${this.lastname} , tengo ${this.age}  años y vivo en la calle ${this.address.street} , ${this.address.number} . Mis hobbies son: ${this.hobbies}`
-} 
-console.log(megaTeacher.introduceMySelf());*/
+megaTeacher.introduceMySelf = function () {
+    return `Hola, me llamo ${this.name} ${this.lastname} , tengo ${this.age}  años y vivo en la calle ${this.address.street} , ${this.address.number} . Mis hobbies son: ${this.hobbies.join(", ")}`
+}
+console.log(megaTeacher.introduceMySelf());
 
 //==============================3================================================
 
 const addHobbie = function (array) {
-    for (let i = 0; i < array.length - 1; i++) {
+    let hobs = []
+    for (let hob of megaTeacher.hobbies) {
+        hobs.push(hob.toLowerCase())
+    }
+    for (let hobbie of array) {
         if (megaTeacher.hobbies.length >= 8) {
+            alert('Algunos hobbies de su lista no han podido introducirse por exceder el maximo de parametros (8)');
             break;
         } else {
-            megaTeacher.hobbies.push(array[i])
+            if (hobs.includes(hobbie.toLowerCase())) {
+                megaTeacher.hobbies = megaTeacher.hobbies
+            } else { megaTeacher.hobbies.push(hobbie) }
+
         }
     }
-    return megaTeacher.hobbies
+    return `Lista de hobbies: \n${megaTeacher.hobbies.join("\n")}`
 }
-console.log(addHobbie(["Surf", "Theatre", "Walking", "Tennis","Softball", "Paddle","Football","Dance"]));
+console.log(addHobbie(["Music", "Theatre", "Walking", "Tennis", "Softball", "Paddle", "Football", "Dance"]));
 
 //================================4===============================================
 
-megaTeacher.editPersonalData = function (name, lastname, age, vegan) {
+megaTeacher.editPersonalData = function (name, lastname, age, vegan, height, weight) {
     this.name = name;
     this.lastname = lastname;
     this.age = age;
     this.vegan = vegan;
-    return this
+    this.height = height;
+    this.weight = weight;
+    return ` Nuevos datos: \n Nombre: ${this.name} \n Apellido: ${this.lastname} \n Edad: ${this.age} \n Vegan: ${this.vegan} \n Altura: ${this.height}cm \n Peso: ${this.weight}kg \n`
 }
-console.log(megaTeacher.editPersonalData("Pedro", "Perez", 25, true));
+console.log(megaTeacher.editPersonalData("Pedro", "Perez", 25, true, 1.79, 78));
 
 //=================================5============================================
 
 /*megaTeacher.editAdress = function (street, number, floor) {
-    megaTeacher.address.street = street;
-    megaTeacher.address.number = number;
-    megaTeacher.address.floor = floor;
-    return megaTeacher
+    this.address.street = street;
+    this.address.number = number;
+    this.address.floor = floor;
+    return `Direccion: ${this.adress.street}\nNumero: ${this.adress.number}\nPiso: ${this.adress.floor}`
 }
 console.log(megaTeacher.editAdress("Calle de Gerona","1","Bj"));*/
 
@@ -72,34 +82,48 @@ megaTeacher.editAdress = function (newStreet, newNumber, newFloor, newAdress) {
     let dirArr = []
     dirArr.push(this.address)
     this.adress = dirArr
-    newAdress ? dirArr.push({ "street": newStreet, "number": newNumber, "floor": newFloor }) :
+    if (newAdress) {
+        dirArr.push({ "street": newStreet, "number": newNumber, "floor": newFloor })
+        return `Direccion 1:\n${this.adress[0].street}\nNumero: ${this.adress[0].number}\nPiso: ${this.adress[0].floor}\nDireccion 2:\n${this.adress[1].street}\nNumero:  ${this.adress[1].number}\nPiso:  ${this.adress[1].floor}`
+    } else {
         this.address.street = newStreet;
-    this.address.number = newNumber;
-    this.address.floor = newFloor;
-    return this
+        this.address.number = newNumber;
+        this.address.floor = newFloor;
+        return `Direccion: ${this.adress[0].street}\nNumero: ${this.adress[0].number}\nPiso: ${this.adress[0].floor}`
+    }
 }
 console.log(megaTeacher.editAdress("Calle de Gerona", "1", "Bj", true))
 
 //==============================7=================================================
 
 megaTeacher.addBook = function (book) {
-    if (this.books.includes(book)) {
-        return book.toUpperCase()
+    let books = []
+    for (let bk of this.books) {
+        books.push(bk.toLowerCase())
+    }
+    if (books.includes(book.toLowerCase())) {
+        return `Ya esta disponible el libro: ${book.toUpperCase()}`
     } else {
         this.books.push(book)
-        return this.books
+        return `Lista de Libros: ${this.books.join("\n ")}`
     }
 }
-console.log(megaTeacher.addBook("Lord of the Flies"));
+console.log(megaTeacher.addBook("lord of the Flies"));
 
 //============================8=====================================================
 
 megaTeacher.addMovie = function (film) {
+    let movies = []
+    for (let movie of this.films) {
+        movies.push(movie.toLowerCase())
+    }
     if (film == undefined || film == null) {
-        return this.films.splice([this.films.length / 2])[0]
+        return `Tiene disponible la pelicula: ${this.films.splice([this.films.length / 2])[0]}`
+    } else if (movies.includes(film.toLowerCase())) {
+        return `Ya esta disponible la pelicula: ${film}`
     } else {
         this.films.push(film)
-        return this.films
+        return `Lista de Peliculas: ${this.films.join("\n ")}`
     }
 }
-console.log(megaTeacher.addMovie("Terminator"));
+console.log(megaTeacher.addMovie('die Hard'));
